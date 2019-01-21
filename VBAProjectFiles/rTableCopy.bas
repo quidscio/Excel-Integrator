@@ -4,13 +4,13 @@ Const SRCSHEET = "tImport"
 Const SRCTABLE = "tblImport"
 Const DSTSHEET = "tData"
 Const DSTTABLE = "tblData"
-
-
+                  
 '' Copy all rows from source table to all rows (matching columns) in destination table
 Sub Table2Table()
     ' This is useful for copying data from a Power Query table to a source table for analysis such as pivots
+    ' 01.20.19 rmh Add some detective messages for Immediate window in case a sheet or table is not found
     
-    dbg = False
+    dbg = True
     sheetFound = False
     tableFound = False
     
@@ -65,7 +65,7 @@ Private Function ConfirmParms(Qsheet, Qtable)
 
     Dim tbl As ListObject
     
-    dbg = False
+    dbg = True
     ConfirmParms = False
     
     If IsSheet(Qsheet) Then
@@ -79,6 +79,9 @@ Private Function ConfirmParms(Qsheet, Qtable)
             Next tbl
         End With
     End If
+    If ConfirmParms = False Then
+        Debug.Print ("** Unable to find " & Qtable & " on sheet " & Qsheet & ".")
+    End If
     
 End Function
 
@@ -88,7 +91,7 @@ Private Function IsSheet(Qsheet) As Boolean
     Dim sht As Worksheet
     Dim wb As Workbook
     
-    dbg = False
+    dbg = True
     
     If wb Is Nothing Then Set wb = ActiveWorkbook
     On Error Resume Next
